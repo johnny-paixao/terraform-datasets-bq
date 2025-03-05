@@ -1,23 +1,26 @@
 name: List services in GCP
 
 on:
-  workflow_dispatch:  # Permite rodar manualmente no GitHub Actions
+  workflow_dispatch:
 
 permissions:
-  id-token: write  # Permite que o GitHub gere o token OIDC
+  id-token: write
 
 jobs:
   Get_OIDC_ID_token:
     runs-on: ubuntu-latest
     steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3  # Adicionando esse passo
+
     - id: 'auth'
       name: 'Authenticate to GCP'
-      uses: 'google-github-actions/auth@v2'
+      uses: google-github-actions/auth@v2
       with:
           create_credentials_file: 'true'
           workload_identity_provider: 'projects/631636540775/locations/global/workloadIdentityPools/github-pool/providers/github-provider'
           service_account: 'terraform-github@unique-nebula-452817-i5.iam.gserviceaccount.com'
-          audience: 'https://github.com/johnny-paixao/terraform-datasets-bq'  # <-- Adicionado
+          audience: 'https://github.com/johnny-paixao/terraform-datasets-bq'
 
     - id: 'gcloud'
       name: 'gcloud'
