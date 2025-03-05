@@ -17,6 +17,7 @@ jobs:
           create_credentials_file: 'true'
           workload_identity_provider: 'projects/631636540775/locations/global/workloadIdentityPools/github-pool/providers/github-provider'
           service_account: 'terraform-github@unique-nebula-452817-i5.iam.gserviceaccount.com'
+           audience: 'https://github.com/johnny-paixao/terraform-datasets-bq'  # <-- Adicionado
 
     - id: 'gcloud'
       name: 'gcloud'
