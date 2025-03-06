@@ -1,3 +1,4 @@
 It's a simple commit test.
 1
 2
+3
