@@ -1,0 +1,30 @@
+steps:
+  - name: 'alpine'
+    entrypoint: 'sh'
+    args:
+      - '-c'
+      - |
+        echo "🚀 Instalando Terragrunt"
+        apk add --no-cache wget bash
+        wget -q -O terragrunt https://github.com/gruntwork-io/terragrunt/releases/latest/download/terragrunt_linux_amd64
+        chmod +x terragrunt
+        mv terragrunt /usr/local/bin/
+
+        echo "✅ Iniciando Terragrunt"
+        terragrunt init -backend-config="bucket=${_TF_STATE_BUCKET}" -backend-config="prefix=${_TF_STATE_PREFIX}"
+
+        echo "✅ Executando Terragrunt Plan"
+        terragrunt plan -out=tfplan
+
+        echo "✅ Aplicando Terragrunt"
+        terragrunt apply -auto-approve tfplan
+
+substitutions:
+  _PROJECT_ID: "${_PROJECT_ID}"
+  _TF_STATE_BUCKET: "${_TF_STATE_BUCKET}"
+  _TF_STATE_PREFIX: "${_TF_STATE_PREFIX}"
+  _GOOGLE_PROVIDER_VERSION: "${_GOOGLE_PROVIDER_VERSION}"
+  _LOCATION: "${_LOCATION}"
+
+timeout: 1200s
+serviceAccount: "cloudbuild-sa@unique-nebula-452817-i5.iam.gserviceaccount.com"
